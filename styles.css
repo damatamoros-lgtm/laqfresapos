@@ -1,0 +1,86 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  color: #222;
+}
+
+.contenedor {
+  max-width: 480px;
+  margin: auto;
+  padding: 16px;
+  background: white;
+  min-height: 100vh;
+}
+
+h2, h3 {
+  text-align: center;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+}
+
+input, select, textarea, button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background: #d6336c;
+  color: white;
+  font-weight: bold;
+  border: none;
+  margin-top: 12px;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+#precio, #totalPedido {
+  text-align: center;
+  color: #d6336c;
+}
+
+#pedido > div {
+  background: #fff5f8;
+}
+
+#comanda {
+  background: white;
+  padding: 12px;
+}
+
+@media print {
+
+  body * {
+    visibility: hidden;
+  }
+
+  #comanda, #comanda * {
+    visibility: visible;
+  }
+
+  #comanda {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  #comanda button {
+    display: none;
+  }
+
+}

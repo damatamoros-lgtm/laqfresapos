@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>La Q'Fresa POS</title>
+
+<link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#d6336c">
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+<h2>🍓 LA Q'FRESA POS</h2>
+
+<label>Cliente</label>
+<input id="cliente" type="text">
+
+<label>Nombre del vaso</label>
+<input id="vaso" type="text">
+
+<label>Producto</label>
+
+<select id="producto">
+<option value="">Seleccione...</option>
+
+<option>Fresha School</option>
+<option>Fresita</option>
+<option>Fresota</option>
+<option>Brownie con fruta</option>
+<option>Suspiros</option>
+<option>LaQ'Fresa</option>
+<option>Merengón</option>
+
+</select>
+
+<h3 id="precio">$0</h3>
+
+<hr>
+
+<div id="ingredientes"></div>
+
+<hr>
+
+
+<button id="btnAgregarProducto">
+
+Agregar producto
+
+</button>
+
+<hr>
+
+<h3>Pedido</h3>
+
+<div id="pedido"></div>
+<h3>Total pedido</h3>
+
+<h2 id="totalPedido">$0</h2>
+<br>
+
+<button id="btnEnviar">
+
+Enviar a cocina
+
+</button>
+
+<br><br>
+
+<button id="btnFinalizar">
+Finalizar pedido
+</button>
+
+<hr>
+
+<div id="comanda"></div>
+
+</div>
+
+<script src="datos.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
