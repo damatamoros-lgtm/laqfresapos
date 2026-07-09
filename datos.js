@@ -73,6 +73,7 @@ tiposAdicionales:[
     "Premium",
     "Helado",
     "Nutella",
+    "Quipitos",
     "Queso",
     "Suspiros"
 ],
@@ -84,7 +85,8 @@ preciosAdicionales:{
     Clásico:1000,
     Premium:2000,
     Helado:2000,
-    Nutella:3000,
+    Nutella:2000,
+    Quipitos:1000,
     Queso:1000,
     Suspiros:2000
 

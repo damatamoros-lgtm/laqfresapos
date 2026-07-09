@@ -184,6 +184,10 @@ document.addEventListener("change", function(e){
             lista = ["Nutella"];
             break;
 
+        case "Quipitos":
+            lista = ["Quipitos"];
+            break;
+
         case "Queso":
             lista = ["Queso"];
             break;
