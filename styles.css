@@ -84,3 +84,20 @@ button:active {
   }
 
 }
+
+.contador {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contador button {
+  width: 60px;
+}
+
+#cantidad {
+  font-size: 24px;
+  font-weight: bold;
+  min-width: 40px;
+  text-align: center;
+}

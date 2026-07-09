@@ -114,7 +114,7 @@ document.addEventListener("click", function(e){
 
     const div=document.getElementById("listaAdicionales");
 
-    div.innerHTML += `
+    div.insertAdjacentHTML("beforeend", `
 
     <div style="margin-bottom:10px;">
 
@@ -140,7 +140,7 @@ document.addEventListener("click", function(e){
 
     </div>
 
-    `;
+    `);
 
 });
 
@@ -209,6 +209,7 @@ document.getElementById("btnAgregarProducto").addEventListener("click", function
     const cliente = document.getElementById("cliente").value;
     const vaso = document.getElementById("vaso").value;
     const productoNombre = comboProducto.value;
+    const cantidad = Number(document.getElementById("cantidad").textContent) || 1;
 
     if(productoNombre === ""){
         alert("Seleccione un producto.");
@@ -262,12 +263,13 @@ document.getElementById("btnAgregarProducto").addEventListener("click", function
         return suma + (item.precio * item.cantidad);
     }, 0);
 
-    const totalProducto = productoInfo.precio + totalAdicionales;
+    const totalProducto = (productoInfo.precio + totalAdicionales) * cantidad;
 
     const productoFinal = {
     cliente,
     vaso,
     producto: productoNombre,
+    cantidad,
     frutas,
     salsas,
     clasicos,
@@ -307,7 +309,7 @@ function actualizarPedido(){
         html += `
             <div style="border:1px solid #999;padding:10px;margin-bottom:15px;border-radius:8px;">
 
-                <b>${i + 1}. ${p.producto}</b>
+                <b>${i + 1}. ${p.cantidad || 1} x ${p.producto}</b>
 
 <button onclick="editarProducto(${i})">Editar</button>
 <button onclick="eliminarProducto(${i})">Eliminar</button>
@@ -421,7 +423,8 @@ function generarComanda(){
 <h3>COMANDA</h3>
 
 <h3>Pedido #${String(numeroPedido).padStart(4,"0")}</h3>
-            <p><b>Cliente:</b> ${document.getElementById("cliente").value}</p>
+            <p><b>👤 Mesero:</b> ${document.getElementById("cliente").value}</p>
+<p><b>🥤 Vaso:</b> ${pedido[0]?.vaso || ""}</p>
             <hr>
     `;
 
@@ -430,7 +433,7 @@ function generarComanda(){
         total += p.total;
 
         html += `
-            <p><b>${i + 1}. ${p.producto}</b> - ${p.vaso}</p>
+            <p><b>${i + 1}. ${p.cantidad || 1} x ${p.producto}</b> - ${p.vaso}</p>
         `;
 
         p.frutas.forEach(x => html += `<p>- ${x}</p>`);
@@ -468,6 +471,8 @@ function generarComanda(){
     numeroPedido++;
 localStorage.setItem("numeroPedido", numeroPedido);
 
+document.getElementById("cantidad").value = 1;
+
 }
 
 // ==========================================
@@ -484,6 +489,7 @@ document.getElementById("btnFinalizar").addEventListener("click", function(){
 
     document.getElementById("cliente").value = "";
     document.getElementById("vaso").value = "";
+    document.getElementById("cantidad").textContent = "1";
 
     comboProducto.value = "";
     precio.textContent = "$0";
@@ -493,6 +499,7 @@ document.getElementById("btnFinalizar").addEventListener("click", function(){
     document.getElementById("totalPedido").textContent = "$0";
 
     document.getElementById("comanda").innerHTML = "";
+    localStorage.removeItem("pedido");
 
 });
 // ==========================================
@@ -581,3 +588,53 @@ if ("serviceWorker" in navigator) {
         .then(() => console.log("Service Worker registrado"))
         .catch(error => console.log("Error registrando Service Worker:", error));
 }
+// ==========================================
+// CONTADOR DE CANTIDAD
+// ==========================================
+
+document.getElementById("btnMas").addEventListener("click", function(){
+
+    let cantidad = Number(document.getElementById("cantidad").textContent);
+
+    document.getElementById("cantidad").textContent = cantidad + 1;
+
+});
+
+document.getElementById("btnMenos").addEventListener("click", function(){
+
+    let cantidad = Number(document.getElementById("cantidad").textContent);
+
+    if(cantidad > 1){
+        document.getElementById("cantidad").textContent = cantidad - 1;
+    }
+
+});
+
+// ======================================
+// MESERO FIJO
+// ======================================
+
+window.addEventListener("load", function(){
+
+    const selectMesero = document.getElementById("cliente");
+
+    const meseroGuardado = localStorage.getItem("mesero");
+
+    if(meseroGuardado){
+
+        selectMesero.value = meseroGuardado;
+
+    }else{
+
+        selectMesero.value = "Juan";
+        localStorage.setItem("mesero","Juan");
+
+    }
+
+});
+
+document.getElementById("cliente").addEventListener("change", function(){
+
+    localStorage.setItem("mesero", this.value);
+
+});

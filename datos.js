@@ -45,7 +45,9 @@ clasicos:[
 premium:[
 "M&M",
 "Snickers",
-"Bolitas explosivas",
+"Bolitas explosivas - Sandía",
+"Bolitas explosivas - Manzana verde",
+"Bolitas explosivas - Cereza",
 "Leche en polvo",
 "Almendra cortada",
 "Coco deshidratado",
