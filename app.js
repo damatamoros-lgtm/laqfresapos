@@ -480,30 +480,93 @@ document.getElementById("cantidad").value = 1;
 }
 
 // ==========================================
-// FINALIZAR PEDIDO
+// FINALIZAR PEDIDO Y GUARDAR EN GOOGLE SHEETS
 // ==========================================
 
-document.getElementById("btnFinalizar").addEventListener("click", function(){
+document.getElementById("btnFinalizar").addEventListener("click", async function(){
 
-    if(!confirm("¿Finalizar este pedido y limpiar todo?")){
+    if(pedido.length === 0){
+        alert("No hay productos en el pedido.");
         return;
     }
 
-    pedido = [];
+    if(!confirm("¿Finalizar este pedido y guardarlo en la base de datos?")){
+        return;
+    }
 
-    document.getElementById("cliente").value = "";
-    document.getElementById("vaso").value = "";
-    document.getElementById("cantidad").textContent = "1";
+    const botonFinalizar = document.getElementById("btnFinalizar");
+    botonFinalizar.disabled = true;
+    botonFinalizar.textContent = "Guardando...";
 
-    comboProducto.value = "";
-    precio.textContent = "$0";
-    ingredientes.innerHTML = "";
+    try {
 
-    document.getElementById("pedido").innerHTML = "";
-    document.getElementById("totalPedido").textContent = "$0";
+        const totalPedido = pedido.reduce((suma, producto) => {
+            return suma + Number(producto.total || 0);
+        }, 0);
 
-    document.getElementById("comanda").innerHTML = "";
-    localStorage.removeItem("pedido");
+        // Si ya se generó la comanda, numeroPedido fue aumentado en 1.
+        const comandaGenerada =
+            document.getElementById("comanda").innerHTML.trim() !== "";
+
+        const numeroPedidoGuardado = comandaGenerada
+            ? Math.max(1, numeroPedido - 1)
+            : numeroPedido;
+
+        const nombresVasos = [
+            ...new Set(
+                pedido
+                    .map(producto => producto.vaso)
+                    .filter(nombre => nombre !== "")
+            )
+        ].join(" | ");
+
+        const datosPedido = {
+            idPedido: String(numeroPedidoGuardado).padStart(4, "0"),
+            mesero: document.getElementById("cliente").value,
+            cliente: nombresVasos,
+            total: totalPedido,
+            estado: "Finalizado",
+            productos: pedido
+        };
+
+        await guardarPedidoEnSheets(datosPedido);
+
+        // Limpiar el pedido únicamente después del envío
+        pedido = [];
+        indiceEditando = null;
+
+        document.getElementById("vaso").value = "";
+        document.getElementById("cantidad").textContent = "1";
+
+        comboProducto.value = "";
+        precio.textContent = "$0";
+        ingredientes.innerHTML = "";
+
+        document.getElementById("pedido").innerHTML = "";
+        document.getElementById("totalPedido").textContent = "$0";
+        document.getElementById("comanda").innerHTML = "";
+
+        localStorage.removeItem("pedido");
+
+        // El mesero seleccionado permanece guardado
+        alert("Pedido guardado correctamente.");
+
+    } catch(error) {
+
+        console.error(error);
+
+        alert(
+            "No fue posible guardar el pedido. " +
+            "Verifica la conexión a internet e inténtalo nuevamente. " +
+            "El pedido no se borró."
+        );
+
+    } finally {
+
+        botonFinalizar.disabled = false;
+        botonFinalizar.textContent = "Finalizar pedido";
+
+    }
 
 });
 // ==========================================
