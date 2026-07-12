@@ -18,3 +18,43 @@ async function guardarPedidoEnSheets(datosPedido) {
 
     return true;
 }
+// ==========================================
+// BUSCAR PEDIDO POR ID
+// ==========================================
+
+function buscarPedidoPorId(idPedido) {
+
+    return new Promise((resolve, reject) => {
+
+        const callback = "respuestaPedido_" + Date.now();
+
+        const script = document.createElement("script");
+
+        window[callback] = function(respuesta) {
+
+            resolve(respuesta);
+
+            delete window[callback];
+            script.remove();
+
+        };
+
+        script.onerror = function() {
+
+            reject(new Error("No fue posible consultar el pedido."));
+
+            delete window[callback];
+            script.remove();
+
+        };
+
+        script.src =
+            API_URL +
+            "?id=" + encodeURIComponent(idPedido) +
+            "&callback=" + callback;
+
+        document.body.appendChild(script);
+
+    });
+
+}

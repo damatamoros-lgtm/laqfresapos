@@ -705,3 +705,225 @@ document.getElementById("cliente").addEventListener("change", function(){
     localStorage.setItem("mesero", this.value);
 
 });
+// ==========================================
+// BUSCAR PEDIDO EN EL HISTORIAL
+// ==========================================
+
+document.getElementById("btnBuscarPedido").addEventListener("click", async function(){
+
+    const idPedido = document
+        .getElementById("idPedidoBuscar")
+        .value
+        .trim();
+
+    const resultado = document.getElementById("resultadoBusqueda");
+
+    if(idPedido === ""){
+        alert("Escribe el ID del pedido.");
+        return;
+    }
+
+    resultado.innerHTML = "<p>Buscando pedido...</p>";
+
+    try {
+
+        const respuesta = await buscarPedidoPorId(idPedido);
+
+        if(!respuesta.ok){
+
+            resultado.innerHTML =
+                `<p>${respuesta.mensaje || "Pedido no encontrado."}</p>`;
+
+            return;
+        }
+
+        mostrarPedidoBuscado(respuesta);
+
+    } catch(error) {
+
+        console.error(error);
+
+        resultado.innerHTML =
+            "<p>No fue posible consultar el pedido.</p>";
+
+    }
+
+});
+
+function mostrarPedidoBuscado(respuesta){
+
+    const pedidoEncontrado = respuesta.pedido;
+    const productos = respuesta.productos || [];
+
+    let html = `
+        <div style="border:1px solid #999;padding:12px;margin-top:12px;border-radius:8px;">
+
+            <h3>Pedido ${pedidoEncontrado.id}</h3>
+
+            <p><b>Fecha:</b> ${pedidoEncontrado.fecha}</p>
+            <p><b>Hora:</b> ${pedidoEncontrado.hora}</p>
+            <p><b>Mesero:</b> ${pedidoEncontrado.mesero}</p>
+            <p><b>Cliente:</b> ${pedidoEncontrado.cliente}</p>
+
+            <hr>
+    `;
+
+    productos.forEach((producto, indice) => {
+
+        html += `
+            <p>
+                <b>${indice + 1}. ${producto.cantidad} x ${producto.producto}</b>
+                - ${producto.vaso}
+            </p>
+        `;
+
+        if(producto.frutas){
+            html += `<p>🍓 Frutas: ${producto.frutas}</p>`;
+        }
+
+        if(producto.salsas){
+            html += `<p>🥫 Salsas: ${producto.salsas}</p>`;
+        }
+
+        if(producto.clasicos){
+            html += `<p>🍪 Clásicos: ${producto.clasicos}</p>`;
+        }
+
+        if(producto.premium){
+            html += `<p>⭐ Premium: ${producto.premium}</p>`;
+        }
+
+        if(producto.queso === "Sí"){
+            html += `<p>🧀 Queso</p>`;
+        }
+
+        if(producto.adicionales){
+            html += `<p>➕ Adicionales: ${producto.adicionales}</p>`;
+        }
+
+        if(producto.observaciones){
+            html += `<p><b>Indicaciones:</b> ${producto.observaciones}</p>`;
+        }
+
+        html += `
+            <p><b>Subtotal:</b> $${Number(producto.subtotal).toLocaleString("es-CO")}</p>
+            <hr>
+        `;
+
+    });
+
+    html += `
+            <h3>
+                Total: $${Number(pedidoEncontrado.total).toLocaleString("es-CO")}
+            </h3>
+
+            <button type="button" id="btnReimprimirPedido">
+                Reimprimir comanda
+            </button>
+
+        </div>
+    `;
+
+    document.getElementById("resultadoBusqueda").innerHTML = html;
+
+    document
+        .getElementById("btnReimprimirPedido")
+        .addEventListener("click", function(){
+
+            generarComandaHistorial(pedidoEncontrado, productos);
+
+        });
+
+}// ==========================================
+// GENERAR COMANDA DESDE EL HISTORIAL
+// ==========================================
+
+function generarComandaHistorial(pedidoEncontrado, productos){
+
+    let html = `
+        <div style="border:2px solid #000;padding:15px;margin-top:20px;">
+
+            <h2>🍓 LA Q'FRESA</h2>
+
+            <h3>COMANDA</h3>
+
+            <h3>Pedido #${pedidoEncontrado.id}</h3>
+
+            <p><b>Mesero:</b> ${pedidoEncontrado.mesero}</p>
+
+            <hr>
+    `;
+
+    productos.forEach((producto, indice) => {
+
+        html += `
+            <p>
+                <b>${indice + 1}. ${producto.cantidad} x ${producto.producto}</b>
+                - ${producto.vaso}
+            </p>
+        `;
+
+        if(producto.frutas){
+            producto.frutas
+                .split(" | ")
+                .forEach(x => html += `<p>- ${x}</p>`);
+        }
+
+        if(producto.salsas){
+            producto.salsas
+                .split(" | ")
+                .forEach(x => html += `<p>- ${x}</p>`);
+        }
+
+        if(producto.clasicos){
+            producto.clasicos
+                .split(" | ")
+                .forEach(x => html += `<p>- ${x}</p>`);
+        }
+
+        if(producto.premium){
+            producto.premium
+                .split(" | ")
+                .forEach(x => html += `<p>- ${x}</p>`);
+        }
+
+        if(producto.queso === "Sí"){
+            html += `<p>- Queso</p>`;
+        }
+
+        if(producto.adicionales){
+            producto.adicionales
+                .split(" | ")
+                .forEach(x => html += `<p>+ ${x}</p>`);
+        }
+
+        if(producto.observaciones){
+            html += `
+                <p>
+                    <b>Indicaciones:</b> ${producto.observaciones}
+                </p>
+            `;
+        }
+
+        html += `<hr>`;
+    });
+
+    html += `
+        <h3>
+            Total: $${Number(pedidoEncontrado.total).toLocaleString("es-CO")}
+        </h3>
+
+        <button onclick="window.print()">
+            Imprimir comanda
+        </button>
+
+        </div>
+    `;
+
+    document.getElementById("comanda").innerHTML = html;
+
+    document.getElementById("comanda").scrollIntoView({
+        behavior: "smooth"
+    });
+
+}

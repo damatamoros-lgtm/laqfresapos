@@ -11,6 +11,7 @@ productos: [
 {nombre:"Merengón",precio:13000,frutas:2,salsas:1,clasicos:1,premium:0,queso:false},
 {nombre:"Cuajada",precio:7000,frutas:0,salsas:1,clasicos:1,premium:0,queso:false},
 {nombre:"Quipitos",precio:3000,frutas:0,salsas:0,clasicos:0,premium:0,queso:false},
+{nombre:"Helado",precio:2000,frutas:0,salsas:1,clasicos:1,premium:0,queso:false},
 {nombre:"Adición de helado",precio:3000,frutas:0,salsas:0,clasicos:0,premium:0,queso:false}
 
 ],
