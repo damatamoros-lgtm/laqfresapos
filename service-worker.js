@@ -1,4 +1,4 @@
-const CACHE_NAME = "laqfresa-pos-v6";
+const CACHE_NAME = "laqfresa-pos-v8";
 
 const FILES_TO_CACHE = [
     "./",
@@ -6,6 +6,7 @@ const FILES_TO_CACHE = [
     "./styles.css",
     "./app.js",
     "./datos.js",
+    "./api.js",
     "./manifest.json",
     "./icon-192.png",
     "./icon-512.png"

@@ -436,8 +436,26 @@ function generarComanda(){
 
         total += p.total;
 
+        let nombreComanda = p.producto;
+
+if(p.producto === "Fresita"){
+    nombreComanda = "12OZ Fresita";
+}
+
+if(p.producto === "Fresota"){
+    nombreComanda = "16OZ Fresota";
+}
+
+if(p.producto === "LaQ'Fresa"){
+    nombreComanda = "24OZ La Q Fresa";
+}
+
+if(p.producto === "Fresha School"){
+    nombreComanda = "8OZ School";
+}
+
         html += `
-            <p><b>${i + 1}. ${p.cantidad || 1} x ${p.producto}</b> - ${p.vaso}</p>
+            <p><b>${i + 1}. ${p.cantidad || 1} x ${nombreComanda}</b> - ${p.vaso}</p>
         `;
 
         p.frutas.forEach(x => html += `<p>- ${x}</p>`);
