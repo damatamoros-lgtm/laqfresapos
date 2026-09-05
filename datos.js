@@ -13,7 +13,7 @@ productos: [
 {nombre:"Quipitos",precio:3000,frutas:0,salsas:0,clasicos:0,premium:0,queso:false},
 {nombre:"Helado",precio:2000,frutas:0,salsas:1,clasicos:1,premium:0,queso:false},
 {nombre:"Adición de helado",precio:3000,frutas:0,salsas:0,clasicos:0,premium:0,queso:false},
-{nombre:"Gelatina",precio:10000,frutas:0,salsas:0,clasicos:0,premium:0,helados:0,queso:false},
+{nombre:"Gelatina",precio:12000,frutas:0,salsas:0,clasicos:0,premium:0,helados:0,queso:false},
 {nombre:"Maracumango",precio:17000,frutas:0,salsas:0,clasicos:0,premium:0,helados:0,queso:false},
 {nombre:"Banana Split",precio:15000,frutas:1,salsas:1,clasicos:0,premium:0,helados:2,queso:false}
 
