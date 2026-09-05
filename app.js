@@ -70,6 +70,8 @@ html += crearSelect("clasico",datos.clasicos,producto.clasicos);
 
 html += crearSelect("premium",datos.premium,producto.premium);
 
+html += crearSelect("helado", datos.helados, producto.helados || 0);
+
     if(producto.queso){
 
         html += `
@@ -238,6 +240,10 @@ document.getElementById("btnAgregarProducto").addEventListener("click", function
         .map(x => x.value)
         .filter(x => x !== "");
 
+    const helados = [...document.querySelectorAll(".helado")]
+    .map(x => x.value)
+    .filter(x => x !== "");
+
     const queso = document.getElementById("queso")?.checked || false;
 
     const observaciones = document.getElementById("observaciones")?.value || "";
@@ -278,6 +284,7 @@ document.getElementById("btnAgregarProducto").addEventListener("click", function
     salsas,
     clasicos,
     premium,
+    helados,
     queso,
     adicionales,
     observaciones,
@@ -462,6 +469,12 @@ if(p.producto === "Fresha School"){
         p.salsas.forEach(x => html += `<p>- ${x}</p>`);
         p.clasicos.forEach(x => html += `<p>- ${x}</p>`);
         p.premium.forEach(x => html += `<p>- ${x}</p>`);
+
+        if(p.helados && p.helados.length > 0){
+        p.helados.forEach(x => {
+        html += `<p>- Helado: ${x}</p>`;
+        });
+        }
 
         if(p.queso){
             html += `<p>- Queso</p>`;
@@ -811,6 +824,10 @@ function mostrarPedidoBuscado(respuesta){
             html += `<p>⭐ Premium: ${producto.premium}</p>`;
         }
 
+        if(producto.helados){
+            html += `<p>🍨 Helados: ${producto.helados}</p>`;
+        }
+
         if(producto.queso === "Sí"){
             html += `<p>🧀 Queso</p>`;
         }
@@ -905,6 +922,12 @@ function generarComandaHistorial(pedidoEncontrado, productos){
                 .forEach(x => html += `<p>- ${x}</p>`);
         }
 
+        if(producto.helados){
+            producto.helados
+                .split(" | ")
+                .forEach(x => html += `<p>- Helado: ${x}</p>`);
+        }
+        
         if(producto.queso === "Sí"){
             html += `<p>- Queso</p>`;
         }
