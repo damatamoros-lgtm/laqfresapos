@@ -67,7 +67,8 @@ helados:[
 "Maracuyá",
 "Napolitano",
 "Frutos del bosque",
-"Tres leches"
+"Tres leches",
+"Drácula"
 ],
 
 tiposAdicionales:[
