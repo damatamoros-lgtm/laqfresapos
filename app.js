@@ -516,6 +516,13 @@ document.getElementById("cantidad").value = 1;
 
 document.getElementById("btnFinalizar").addEventListener("click", async function(){
 
+    const metodoPago = document.getElementById("metodoPago").value;
+
+if(metodoPago === ""){
+    alert("Selecciona el método de pago antes de finalizar.");
+    return;
+     }
+
     if(pedido.length === 0){
         alert("No hay productos en el pedido.");
         return;
@@ -555,6 +562,7 @@ document.getElementById("btnFinalizar").addEventListener("click", async function
             idPedido: String(numeroPedidoGuardado).padStart(4, "0"),
             mesero: document.getElementById("cliente").value,
             cliente: nombresVasos,
+            metodoPago: document.getElementById("metodoPago").value,
             total: totalPedido,
             estado: "Finalizado",
             productos: pedido
@@ -564,6 +572,7 @@ document.getElementById("btnFinalizar").addEventListener("click", async function
 
         // Limpiar el pedido únicamente después del envío
         pedido = [];
+        document.getElementById("metodoPago").value = "";
         indiceEditando = null;
 
         document.getElementById("vaso").value = "";
@@ -795,6 +804,7 @@ function mostrarPedidoBuscado(respuesta){
             <p><b>Hora:</b> ${pedidoEncontrado.hora}</p>
             <p><b>Mesero:</b> ${pedidoEncontrado.mesero}</p>
             <p><b>Cliente:</b> ${pedidoEncontrado.cliente}</p>
+            <p><b>Método de pago:</b> ${pedidoEncontrado.metodoPago || "No registrado"}</p>
 
             <hr>
     `;
