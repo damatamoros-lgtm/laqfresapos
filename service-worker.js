@@ -1,4 +1,4 @@
-const CACHE_NAME = "laqfresa-pos-v12";
+const CACHE_NAME = "laqfresa-pos-v14";
 
 const FILES_TO_CACHE = [
     "./",

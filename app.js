@@ -511,6 +511,24 @@ document.getElementById("cantidad").value = 1;
 }
 
 // ==========================================
+// SELECCIONAR TIPO DE TRANSFERENCIA
+// ==========================================
+
+document.getElementById("metodoPago").addEventListener("change", function(){
+
+    const contenedor = document.getElementById("contenedorTipoTransferencia");
+    const tipoTransferencia = document.getElementById("tipoTransferencia");
+
+    if(this.value === "Transferencia"){
+        contenedor.style.display = "block";
+    } else {
+        contenedor.style.display = "none";
+        tipoTransferencia.value = "";
+    }
+
+});
+
+// ==========================================
 // FINALIZAR PEDIDO Y GUARDAR EN GOOGLE SHEETS
 // ==========================================
 
@@ -520,6 +538,13 @@ document.getElementById("btnFinalizar").addEventListener("click", async function
 
 if(metodoPago === ""){
     alert("Selecciona el método de pago antes de finalizar.");
+    return;
+     }
+
+const tipoTransferencia = document.getElementById("tipoTransferencia").value;
+
+if(metodoPago === "Transferencia" && tipoTransferencia === ""){
+    alert("Selecciona si la transferencia fue a Nequi o Daviplata.");
     return;
      }
 
@@ -563,6 +588,7 @@ if(metodoPago === ""){
             mesero: document.getElementById("cliente").value,
             cliente: nombresVasos,
             metodoPago: document.getElementById("metodoPago").value,
+            tipoTransferencia: document.getElementById("tipoTransferencia").value,
             total: totalPedido,
             estado: "Finalizado",
             productos: pedido
@@ -573,6 +599,8 @@ if(metodoPago === ""){
         // Limpiar el pedido únicamente después del envío
         pedido = [];
         document.getElementById("metodoPago").value = "";
+        document.getElementById("tipoTransferencia").value = "";
+        document.getElementById("contenedorTipoTransferencia").style.display = "none";
         indiceEditando = null;
 
         document.getElementById("vaso").value = "";
@@ -805,6 +833,9 @@ function mostrarPedidoBuscado(respuesta){
             <p><b>Mesero:</b> ${pedidoEncontrado.mesero}</p>
             <p><b>Cliente:</b> ${pedidoEncontrado.cliente}</p>
             <p><b>Método de pago:</b> ${pedidoEncontrado.metodoPago || "No registrado"}</p>
+            ${pedidoEncontrado.metodoPago === "Transferencia" ? `
+    <p><b>Transferencia a:</b> ${pedidoEncontrado.tipoTransferencia || "No registrado"}</p>
+` : ""}
 
             <hr>
     `;
